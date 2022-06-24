@@ -6,3 +6,7 @@
 footer {
   display: none !important;
 }
+
+#MainMenu {
+  visibility: hidden;
+}
