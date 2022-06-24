@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "dentistry-ekb-hack"
+version = "1.0.0"
+description = "Hacks AI hackathon fmprojects solution for teeth case"
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+gradio = "^3.0.20"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^22.3.0", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
