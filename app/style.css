@@ -1,0 +1,8 @@
+.stButton {
+  justify-content: center;
+  display: flex;
+}
+
+footer {
+  display: none !important;
+}
