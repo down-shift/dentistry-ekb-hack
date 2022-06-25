@@ -1,0 +1,5 @@
+[flake8]
+inline-quotes = "
+max-line-length = 99
+extend-ignore = E203 D100 D106 I100 D105 I201
+exclude = .git,__pycache__,.venv,media/
