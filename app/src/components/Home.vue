@@ -26,17 +26,22 @@
       </button>
     </div>
     <div v-else class="card">
-      <span class="position-absolute" id="close-result">
+      <span class="position-absolute" id="close-result" @click="clearOutput">
         <i class="bi bi-x-lg"></i>
       </span>
       <div class="card-body">
         <h2 class="title">Обработанное изображение</h2>
 
-        <div class="bg-dark p-4">
+        <!-- <div class="bg-dark p-4">
           <code class="bg-dark">
             {{ outputData }}
           </code>
+        </div> -->
+
+        <div class="mt-4 d-flex justify-content-center align-items-center">
+          <img :src="outputData.image" class="analysed_image w-50" />
         </div>
+
         <!-- 
         <div class="mt-5">
           <Result :data="outputData" />
@@ -49,7 +54,6 @@
 <script setup>
 import { ref } from "vue";
 import { analyseImage } from "../api";
-import Result from "./Result.vue";
 
 const postImage = ref(null);
 const isLoading = ref(false);
@@ -69,6 +73,11 @@ const processImage = async () => {
     outputData.value = data.data;
     isLoading.value = false;
   });
+};
+
+const clearOutput = () => {
+  postImage.value = null;
+  outputData.value = null;
 };
 </script>
 
