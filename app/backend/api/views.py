@@ -41,6 +41,7 @@ class ProcessImageView(views.APIView):
             # Save data
             uploaded.image.save(FILENAME, ContentFile(thumb_io.getvalue()), save=False)
             uploaded.result = {"boxes": boxes, "probabilities": prob}
+            uploaded.filename = FILENAME
             uploaded.save()
 
             # Return created instance as response

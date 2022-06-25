@@ -6,17 +6,6 @@
     </div>
 
     <div v-if="!isLoading && outputData === null">
-      <!-- <div>
-        <div class="mb-3">
-          <input
-            class="form-control"
-            type="file"
-            id="formFile"
-            @change="onFileChange"
-          />
-        </div>
-      </div> -->
-
       <DropZone
         :multiple="true"
         ref="dropZone"
@@ -36,6 +25,7 @@
       </div>
     </div>
     <div v-else-if="isLoading && outputData !== null">
+      <h2 class="title mb-4">Обработка изображений...</h2>
       <div class="progress" :key="progress">
         <div
           class="progress-bar"
@@ -50,16 +40,19 @@
       <span class="position-absolute" id="close-result" @click="clearOutput">
         <i class="bi bi-x-lg"></i>
       </span>
-      <div class="card-body">
+      <div class="card-body" id="output-data">
         <h2 class="title mb-4">Обработанные изображения</h2>
 
         <div v-for="obj in outputData">
           <div class="mt-3 row" v-if="obj.image !== null">
-            <div class="col col-auto">
-              <img :src="obj.image" class="analysed_image w-50" />
+            <div
+              class="col col-auto d-flex justify-content-center align-items-center"
+            >
+              <img :src="obj.image" class="analysed_image" />
             </div>
             <div class="col-auto">
-              Обнаружено кариесов: {{ obj.result.boxes.length }}
+              <div><b>Файл: </b>{{ obj.filename }}</div>
+              <b>Обнаружено кариесов:</b> {{ obj.result.boxes.length }}
             </div>
           </div>
         </div>
@@ -69,7 +62,7 @@
 </template>
 
 <script setup>
-import { nextTick, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { analyseImage } from "../api";
 import DropZone from "./DropZone.vue";
@@ -100,6 +93,10 @@ const processImages = async () => {
 
   nextTick(() => {
     isLoading.value = false;
+
+    nextTick(() => {
+      const gallery = new Viewer(document.getElementById("output-data"));
+    });
   });
 };
 
@@ -138,7 +135,9 @@ const clearOutput = () => {
   color: black;
 }
 
-[v-cloak] {
-  display: none;
+.analysed_image {
+  object-fit: scale-down;
+  height: 100px;
+  width: 100px;
 }
 </style>

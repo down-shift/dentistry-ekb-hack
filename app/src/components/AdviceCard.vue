@@ -1,4 +1,6 @@
 <script setup>
+import { marked } from "marked";
+
 const props = defineProps({
   data: {
     type: Object,
@@ -8,12 +10,5 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="card card-body">
-    <div class="row">
-      <div class="col">
-        <img :src="props.data.text" alt="">
-      </div>
-      <div class="col"></div>
-    </div>
-  </div>
+  <div class="card card-body" v-html="marked(data.text)"></div>
 </template>

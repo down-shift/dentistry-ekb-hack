@@ -1,11 +1,12 @@
 <script setup>
 import { computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import TelegramLogin from "./TelegramLogin.vue";
 
 const route = useRoute();
 const store = useStore();
+const router = useRouter();
 
 const loggedIn = computed(() => store.getters["auth/loggedIn"]);
 
@@ -15,6 +16,7 @@ const processLogin = (data) => {
 
 const logout = () => {
   store.dispatch("auth/logout");
+  router.push("/");
 };
 </script>
 

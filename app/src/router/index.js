@@ -13,7 +13,7 @@ const routes = [
   {
     path: "/uploads",
     name: "uploads",
-    component: Uploads,
+    component: () => import("../components/Uploads.vue"),
     meta: {
       auth: true,
     }
@@ -21,7 +21,7 @@ const routes = [
   {
     path: "/advice",
     name: "advice",
-    component: Advice
+    component: import("../components/Advice.vue"),
   },
 ];
 

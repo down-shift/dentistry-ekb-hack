@@ -18,20 +18,21 @@ export default defineConfig({
   },
   server: {
     port: 80,
-    host: true,
+    host: "127.0.0.1",
     proxy: {
       '^/api': {
         target: 'http://localhost:8000',
-        changeOrigin: true,
-        secure: false,
         pathRewrite: { '^/api': '/api' },
         logLevel: 'debug'
       },
       '^/media': {
         target: 'http://localhost:8000',
-        changeOrigin: true,
-        secure: false,
         pathRewrite: { '^/media': '/media' },
+        logLevel: 'debug'
+      },
+      '^/static': {
+        target: 'http://localhost:8000',
+        pathRewrite: { '^/static': '/static' },
         logLevel: 'debug'
       },
     },
