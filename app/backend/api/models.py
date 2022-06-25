@@ -1,18 +1,17 @@
 from django.db import models
-from rest_framework import serializers
-
-
-# class TelegramUser(models.Model):
-#     telegram_id = models.IntegerField("Telegram ID")
-#     chat_id = models.IntegerField("Telegram chat ID")
-
-
-# class TelegramUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = TelegramUser
-#         fields = "__all__"
+from datetime import datetime
 
 
 class UploadedImage(models.Model):
     image = models.ImageField("Изображение")
     result = models.JSONField("Обработанное изображение", default=dict)
+    tg_user = models.IntegerField("Пользователь", default=None, null=True)
+    gen_time = models.DateTimeField("Время обработки", auto_now_add=True)
+    filename = models.CharField(max_length=255, default="")
+
+    class Meta:
+        ordering = ["-gen_time"]
+
+
+class DentistAdvice(models.Model):
+    text = models.TextField()

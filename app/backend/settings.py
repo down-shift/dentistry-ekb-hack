@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     # "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_cleanup",
+    "django_filters",  # Filtering support for API
     "backend.api",
 ]
 
@@ -129,6 +131,11 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"]
+}
 
 
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

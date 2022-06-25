@@ -1,15 +1,27 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Home from "../components/Home.vue";
+import Uploads from "../components/Uploads.vue"
+import Advice from "../components/Advice.vue"
+import { handleMetaViews } from "./utils"
 
 const routes = [
   {
     path: "/",
     name: "home",
-    component: import("../components/Home.vue"),
+    component: Home,
+  },
+  {
+    path: "/uploads",
+    name: "uploads",
+    component: () => import("../components/Uploads.vue"),
     meta: {
-      navbar: {
-        transparent: true,
-      },
-    },
+      auth: true,
+    }
+  },
+  {
+    path: "/advice",
+    name: "advice",
+    component: import("../components/Advice.vue"),
   },
 ];
 
@@ -35,8 +47,8 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  // const res = handleMetaViews(to, next);
-  // if (res) return;
+  const res = handleMetaViews(to, next);
+  if (res) return;
   next();
 });
 
