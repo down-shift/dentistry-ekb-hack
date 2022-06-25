@@ -1,12 +1,12 @@
 <template>
-  <div class="rt-wp container">
+  <div class="rt-wp container" v-cloak>
     <h1 class="title">зуб.чек</h1>
     <div class="text-muted mb-5">
-      Искусственный интеллект для анализа состояния зубов по фотографии
+      Искусственный интеллект для проверки зубов на кариес по фотографии
     </div>
 
     <div v-if="!isLoading && outputData === null">
-      <div>
+      <!-- <div>
         <div class="mb-3">
           <input
             class="form-control"
@@ -15,69 +15,109 @@
             @change="onFileChange"
           />
         </div>
-      </div>
+      </div> -->
 
-      <button
-        v-if="postImage !== null"
-        @click="processImage"
-        class="btn btn-outline-primary"
-      >
-        Начать анализ
-      </button>
+      <DropZone
+        :multiple="true"
+        ref="dropZone"
+        name="images"
+        :accept="'image/*'"
+        @numchange="onFileUpload"
+      />
+
+      <div class="text-center mt-3">
+        <button
+          v-if="filesUploaded"
+          @click="processImages"
+          class="btn btn-outline-primary"
+        >
+          Начать анализ
+        </button>
+      </div>
+    </div>
+    <div v-else-if="isLoading && outputData !== null">
+      <div class="progress" :key="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          :style="{
+            width: progress + '%',
+          }"
+        ></div>
+      </div>
     </div>
     <div v-else class="card">
       <span class="position-absolute" id="close-result" @click="clearOutput">
         <i class="bi bi-x-lg"></i>
       </span>
       <div class="card-body">
-        <h2 class="title">Обработанное изображение</h2>
+        <h2 class="title mb-4">Обработанные изображения</h2>
 
-        <!-- <div class="bg-dark p-4">
-          <code class="bg-dark">
-            {{ outputData }}
-          </code>
-        </div> -->
-
-        <div class="mt-4 d-flex justify-content-center align-items-center">
-          <img :src="outputData.image" class="analysed_image w-50" />
+        <div v-for="obj in outputData">
+          <div class="mt-3 row" v-if="obj.image !== null">
+            <div class="col col-auto">
+              <img :src="obj.image" class="analysed_image w-50" />
+            </div>
+            <div class="col-auto">
+              Обнаружено кариесов: {{ obj.result.boxes.length }}
+            </div>
+          </div>
         </div>
-
-        <!-- 
-        <div class="mt-5">
-          <Result :data="outputData" />
-        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
+import { useStore } from "vuex";
 import { analyseImage } from "../api";
+import DropZone from "./DropZone.vue";
 
-const postImage = ref(null);
 const isLoading = ref(false);
 const outputData = ref(null);
+const filesUploaded = ref(false);
+const progress = ref(0);
 
-const onFileChange = (e) => {
-  const file = e.target.files[0];
-  postImage.value = file;
+const dropZone = ref(null);
+
+const store = useStore();
+
+const onFileUpload = (num) => {
+  filesUploaded.value = Boolean(num);
 };
 
-const processImage = async () => {
-  const fd = new FormData();
-  fd.append("image", postImage.value);
-
+const processImages = async () => {
+  outputData.value = [];
   isLoading.value = true;
-  analyseImage(fd).then((data) => {
-    outputData.value = data.data;
+  const l = dropZone.value.droppedFiles.length;
+  let c = 0;
+  for (let file of dropZone.value.droppedFiles) {
+    await processSingleImage(file);
+    c++;
+    progress.value = (c / l) * 100;
+  }
+
+  nextTick(() => {
     isLoading.value = false;
   });
 };
 
+const processSingleImage = async (file) => {
+  const fd = new FormData();
+
+  fd.append("image", file);
+
+  if (store.getters["auth/loggedIn"])
+    fd.append("tg_user", store.state.auth.user.id);
+
+  const data = await analyseImage(fd);
+  outputData.value.push(data.data);
+};
+
 const clearOutput = () => {
-  postImage.value = null;
   outputData.value = null;
+  filesUploaded.value = false;
 };
 </script>
 
@@ -96,5 +136,9 @@ const clearOutput = () => {
 
 #close-result:hover {
   color: black;
+}
+
+[v-cloak] {
+  display: none;
 }
 </style>

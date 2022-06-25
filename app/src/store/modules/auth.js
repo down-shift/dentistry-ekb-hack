@@ -1,29 +1,35 @@
 const state = () => ({
-  telegramUser: null
+  user: localStorage.getItem("tg-user") ? JSON.parse(localStorage.getItem("tg-user")) : null,
 })
 
 
 const getters = {
-  isAuthenticated: (state) => {
-    return state.telegramUser !== null
+  loggedIn: (state) => {
+    return state.user !== null
   }
 }
 
 
 const actions = {
-  logoutUser({ state, commit }) {
-    commit("setTelegramUser", null);
+  logout({ state, commit }) {
+    commit("clearUser");
   },
-  loginTelegramUser({ state, commit }, data) {
-    commit("setTelegramUser", data);
+  loginuser({ state, commit }, data) {
+    commit("setUser", data);
   }
 }
 
 
 const mutations = {
-  setTelegramUser(state, user) {
-    state.telegramUser = user
+  setUser(state, user) {
+    state.user = user;
+
+    localStorage.setItem("tg-user", JSON.stringify(user));
   },
+  clearUser(state) {
+    state.user = null;
+    localStorage.removeItem("tg-user");
+  }
 }
 
 

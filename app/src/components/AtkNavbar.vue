@@ -7,10 +7,14 @@ import TelegramLogin from "./TelegramLogin.vue";
 const route = useRoute();
 const store = useStore();
 
-const loggedIn = computed(() => store.getters["auth/isAuthenticated"]);
+const loggedIn = computed(() => store.getters["auth/loggedIn"]);
 
 const processLogin = (data) => {
-  store.dispatch("auth/loginTelegramUser", data);
+  store.dispatch("auth/loginuser", data);
+};
+
+const logout = () => {
+  store.dispatch("auth/logout");
 };
 </script>
 
@@ -51,7 +55,7 @@ const processLogin = (data) => {
             <router-link
               class="nav-link"
               aria-current="page"
-              to="/"
+              to="/advice"
               :class="{ active: route.name === 'advice' }"
             >
               Советы от стоматологов</router-link
@@ -73,12 +77,30 @@ const processLogin = (data) => {
           />
         </form>
         <div v-else class="d-flex text-light align-items-center">
-          <div class="me-3 fw-bold">{{ store.state.auth.telegramUser.username }}</div>
-          <img
-            :src="store.state.auth.telegramUser.photo_url"
-            alt=""
-            id="avatar"
-          />
+          <div class="dropdown">
+            <div
+              data-bs-toggle="dropdown"
+              class="d-flex flex-row align-items-center"
+            >
+              <div class="me-3 fw-bold">
+                {{ store.state.auth.user.username }}
+              </div>
+              <img :src="store.state.auth.user.photo_url" alt="" id="avatar" />
+            </div>
+            <ul class="dropdown-menu">
+              <li>
+                <router-link class="dropdown-item" to="/uploads"
+                  ><i class="bi-clock-history me-2"></i>История</router-link
+                >
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="#" @click.prevent="logout"
+                  ><i class="bi-box-arrow-right me-2"></i>Выйти из аккаунта</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

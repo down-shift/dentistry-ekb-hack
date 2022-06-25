@@ -27,6 +27,13 @@ export default defineConfig({
         pathRewrite: { '^/api': '/api' },
         logLevel: 'debug'
       },
+      '^/media': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/media': '/media' },
+        logLevel: 'debug'
+      },
     },
     strictPort: true,
   },
