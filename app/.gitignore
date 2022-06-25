@@ -28,3 +28,5 @@ dist-ssr
 .pytest_cache
 __pycache__
 db.sqlite3
+
+media/

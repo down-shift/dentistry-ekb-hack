@@ -24,7 +24,7 @@ const processLogin = (data) => {
           width="30"
           class="d-inline-block me-3"
         />
-        <span>teeth.чек</span>
+        <span>зуб.чек</span>
       </router-link>
       <button
         class="navbar-toggler"

@@ -18,10 +18,14 @@ export default defineConfig({
   },
   server: {
     port: 80,
-    host: "127.0.0.1",
+    host: true,
     proxy: {
-      "/api*": {
-        target: "http://localhost:8000",
+      '^/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/api': '/api' },
+        logLevel: 'debug'
       },
     },
     strictPort: true,

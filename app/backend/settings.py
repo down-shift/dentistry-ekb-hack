@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-$q8bnfci+*)(4(z$xj_h4l8$a-07-0y-sd6h2q^u3ue(1oayd9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "whitenoise.runserver_nostatic",
+    # "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "rest_framework",
     "backend.api",
@@ -116,11 +116,19 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MIDDLEWARE_CLASSES = ("whitenoise.middleware.WhiteNoiseMiddleware",)
+# MIDDLEWARE_CLASSES = ("whitenoise.middleware.WhiteNoiseMiddleware",)
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "dist" / "static"
 STATICFILES_DIRS = []
 
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
