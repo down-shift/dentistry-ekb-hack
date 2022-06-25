@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "teeth-check-app"
+version = "1.0.0"
+description = "App for AI-powered analysis of teeth by photo"
+authors = ["AlanTheKnight <51376126+AlanTheKnight@users.noreply.github.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.0.5"
+djangorestframework = "^3.13.1"
+whitenoise = "^6.2.0"
+numpy = "^1.23.0"
+opencv-python = "^4.6.0"
+django-cors-headers = "^3.13.0"
+Pillow = "^9.1.1"
+django-cleanup = "^6.0.0"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^22.3.0", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,7 +1,0 @@
-[theme]
-backgroundColor = "#FFFFFF"
-base = "light"
-font = "sans serif"
-
-[server]
-maxUploadSize = 20
