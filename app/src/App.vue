@@ -1,21 +1,46 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+<script setup lang="ts">
+import AtkNavbar from "./components/AtkNavbar.vue";
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <AtkNavbar />
+  <router-view />
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+.card-shadow:hover {
+  transition-property: box-shadow;
+  transition-duration: 1s;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
+
+.rt-wp {
+  padding-top: 60px;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 23px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+body {
+  margin-bottom: 320px;
+  font-family: Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-weight: 400;
 }
 </style>
