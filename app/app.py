@@ -1,16 +1,18 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 
-st.set_page_config(page_title="Teeth check")
+st.set_page_config(page_title="Teeth check", initial_sidebar_state="collapsed")
 
-with open("style.css", "r") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-st.title("😁 Teeth checking tool")
-st.subheader("Искусственный интеллект для анализа состояния зубов по фотографии")
+from stlib import advice, analyze
 
-uploaded_file = st.file_uploader("Выберите изображение...", accept_multiple_files=True)
 
-st.button("Проверить!")
+with st.sidebar:
+    st.markdown("")
+    page = st.selectbox("Select:", ["Анализ", "Полезные советы"])
 
+
+match page:
+    case "Полезные советы":
+        advice.run()
+    case _:
+        analyze.run()
