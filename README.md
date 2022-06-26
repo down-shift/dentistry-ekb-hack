@@ -1,4 +1,4 @@
-# Dentistry-ekb-hack
+# Зуб.чек / Teeth Check
 
 ## Project deploy
 
