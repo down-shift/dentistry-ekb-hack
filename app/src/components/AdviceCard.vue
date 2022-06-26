@@ -10,5 +10,5 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="card card-body" v-html="marked(data.text)"></div>
+  <div class="card card-body mb-3" v-html="marked(data.text)"></div>
 </template>
