@@ -11,21 +11,24 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import toml
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+config = toml.load(BASE_DIR / "config.toml")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-$q8bnfci+*)(4(z$xj_h4l8$a-07-0y-sd6h2q^u3ue(1oayd9"
+SECRET_KEY = config["django"]["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config["django"]["DEBUG"]
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = config["django"]["ALLOWED_HOSTS"]
 
 
 # Application definition
@@ -45,6 +48,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -78,12 +83,25 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": config["database"]["NAME"],
+            "USER": config["database"]["USER"],
+            "PASSWORD": config["database"]["PASSWORD"],
+            "HOST": "localhost",
+            "PORT": "",
+        }
+    }
 
 
 # Password validation
@@ -108,9 +126,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = config["django"]["LANGUAGE_CODE"]
 
-TIME_ZONE = "UTC"
+TIME_ZONE = config["django"]["TIME_ZONE"]
 
 USE_I18N = True
 
@@ -129,8 +147,9 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = config["django"]["CORS_ORIGIN_ALLOW_ALL"]
+CORS_ALLOW_CREDENTIALS = config["django"]["CORS_ALLOW_CREDENTIALS"]
+CORS_ALLOWED_ORIGINS = config["django"]["CORS_ALLOWED_ORIGINS"]
 
 
 REST_FRAMEWORK = {

@@ -1,11 +1,14 @@
 import numpy as np
 import cv2
+from pathlib import Path
 
-model_w_path = (
-    "/home/alantheknight/Projects/dentistry-ekb-hack/app/backend/api/ml/yolo.weights"
-)
+
+CURRENT_DIR = Path(__file__).resolve().parent.absolute()
+
+
+model_w_path = str(CURRENT_DIR / "yolo.weights")
 wh = model_w_path
-model_c_path = "/home/alantheknight/Projects/dentistry-ekb-hack/app/backend/api/ml/cavity-yolo1.cfg"
+model_c_path = str(CURRENT_DIR / "cavity-yolo1.cfg")
 cfg = model_c_path
 net = cv2.dnn.readNetFromDarknet(cfg, wh)
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
