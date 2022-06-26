@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    # "whitenoise.runserver_nostatic",
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "rest_framework",
     "django_cleanup",
@@ -136,7 +136,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# MIDDLEWARE_CLASSES = ("whitenoise.middleware.WhiteNoiseMiddleware",)
+MIDDLEWARE_CLASSES = ("whitenoise.middleware.WhiteNoiseMiddleware",)
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "dist" / "static"
@@ -157,4 +157,30 @@ REST_FRAMEWORK = {
 }
 
 
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(module)s %(process)d %(thread)d %(message)s'
+        }
+    },
+    'handlers': {
+        'gunicorn': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': '/opt/djangoprojects/reports/bin/gunicorn.errors',
+            'maxBytes': 1024 * 1024 * 100,  # 100 mb
+        }
+    },
+    'loggers': {
+        'gunicorn.errors': {
+            'level': 'DEBUG',
+            'handlers': ['gunicorn'],
+            'propagate': True,
+        },
+    }
+}
