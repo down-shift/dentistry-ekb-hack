@@ -43,18 +43,40 @@
       <div class="card-body" id="output-data">
         <h2 class="title mb-4">Обработанные изображения</h2>
 
-        <div v-for="obj in outputData">
+        <div v-for="(obj, i) in outputData">
           <div class="mt-3 row" v-if="obj.image !== null">
             <div
               class="col col-auto d-flex justify-content-center align-items-center"
             >
-              <img :src="obj.image" class="analysed_image" />
+              <img :src="obj.image" class="analysed_image mb-3" />
             </div>
             <div class="col-auto">
               <div><b>Файл: </b>{{ obj.filename }}</div>
               <b>Обнаружено кариесов:</b> {{ obj.result.boxes.length }}
+
+              <div
+                v-if="obj.result.boxes.length === 0"
+                class="alert alert-success mt-3"
+              >
+                <i class="bi-check-lg me-2"></i>
+                Кариесы не обнаружены. Обращайтесь к стоматологу раз в полгода.
+              </div>
+              <div
+                v-else-if="obj.result.boxes.length <= 3"
+                class="alert alert-warning mt-3"
+              >
+                <i class="bi-exclamation-lg me-2"></i>
+                Зубы нуждаются в дополнительном уходе. Посещайте стоматолога раз
+                в месяц.
+              </div>
+              <div v-else class="alert alert-danger mt-3">
+                <i class="bi-x-lg me-2"></i>
+                Зубы в плохом состоянии. Необходимо срочное посещение
+                стоматолога.
+              </div>
             </div>
           </div>
+          <hr v-if="i !== outputData.length - 1" />
         </div>
       </div>
     </div>
